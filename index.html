@@ -1,0 +1,32 @@
+<!-- frontend/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web App</title>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <h1>Web App</h1>
+
+  <!-- Form for GET requests -->
+  <form id="getResultForm">
+    <label for="getName">Get Data by Name:</label>
+    <input type="text" id="getName" name="name" required>
+    <button type="submit">Get Data</button>
+  </form>
+
+  <!-- Form for POST requests -->
+  <form id="submitDataForm">
+    <label for="postName">Name:</label>
+    <input type="text" id="postName" name="name" required>
+    <label for="postData">Data:</label>
+    <input type="text" id="postData" name="data" required>
+    <button type="submit">Submit Data</button>
+  </form>
+
+  <div id="resultContainer"></div>
+
+</body>
+</html>
