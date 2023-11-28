@@ -1,14 +1,21 @@
 const http = require('http');
-const mysql = require('mysql2');
 const url = require('url');
+const mysql = require('mysql')
 
-const dbConfig = {
-    // host: 'sql.freedb.tech',
-    // user: 'freedb_freedb_krisadmin',
-    // password: process.env.DB_PASSWORD,
-    // database: 'freedb_lab5db',
-    // port: 3306
-};
+require('dotenv').config();
+
+const connection = mysql.createConnection({
+    host: 'sql3.freesqldatabase.com',
+    user: 'sql3665883',
+    password: process.env.DB_PASSWORD,
+    database: 'sql3665883',
+    port: 3306
+});
+
+connection.connect((err) => {
+    if (err) throw err;
+    console.log('Connected to the database!');
+});
 
 const server = http.createServer((req, res) => {
 
@@ -16,20 +23,27 @@ const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    const parsedUrl = url.parse(req.url, true);
-    const name = parsedUrl.name;
-    console.log("NAME: ", name);
+    if (req.method === 'GET' && req.url === '/search-user') {
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        req.on('end', () => {
+            const { username } = JSON.parse(body);
+            const query = 'SELECT * FROM user WHERE username = ?';
 
-    if (req.method === 'GET') {
-
-        console.log("GET method is called");
-
-
+            connection.query(query, [username], (err, results) => {
+                if (err) {
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    return res.end(JSON.stringify({ message: 'Error executing query', err }));
+                }
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ message: 'Query successful', results }));
+            });
+        });
     } else {
-
-        res.writeHead(404, { 'Content-Type': 'text/plain'});
-        res.end('Invalid method or endpoint.');
-
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('Not Found');
     }
 });
 
