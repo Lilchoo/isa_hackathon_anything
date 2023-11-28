@@ -20,7 +20,7 @@
             var textBoxValue = document.getElementById("textbox").value;
 
             // Call the sample GET endpoint with the text box value as a parameter
-            var url = "https://example.com/sample-endpoint?param=" + encodeURIComponent(textBoxValue);
+            var url = "https://hackthon-smart-ppl.onrender.com/search-user?name=" + encodeURIComponent(textBoxValue);
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
