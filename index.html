@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sample Form</title>
+</head>
+<body>
+    <form id="myForm">
+        <label for="textbox">Enter Text:</label>
+        <input type="text" id="textbox" name="textbox">
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById("myForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get the value from the text box
+            var textBoxValue = document.getElementById("textbox").value;
+
+            // Call the sample GET endpoint with the text box value as a parameter
+            var url = "https://example.com/sample-endpoint?param=" + encodeURIComponent(textBoxValue);
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Append the returned data as text on the webpage
+                    var resultDiv = document.getElementById("result");
+                    resultDiv.innerText = data;
+                })
+                .catch(error => {
+                    // Handle any errors here
+                    console.error(error);
+                });
+        });
+    </script>
+</body>
+</html>
